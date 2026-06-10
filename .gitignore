@@ -1,0 +1,13 @@
+# Frontend
+ems-fullstack/node_modules
+ems-fullstack/dist
+
+# Backend
+ems-backend/target
+
+# IDE
+.idea
+.vscode
+
+# OS
+.DS_Store
