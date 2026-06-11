@@ -1,6 +1,8 @@
 import axios from "axios";
 
-const URL = "http://localhost:8080/api/emp";
+//const URL = "http://localhost:8080/api/emp";
+
+const URL = "https://employeemanagementsystem-1-g5ih.onrender.com/api/emp";
 
 export const listEmployees = (page, size) =>
     axios.get(`${URL}?page=${page}&size=${size}`);
