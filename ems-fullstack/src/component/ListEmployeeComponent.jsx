@@ -147,29 +147,31 @@ console.log("totalPages:", totalPages);
                         }
                     </tbody>
                 </table>
-                <div className='d-flex justify-content-end gap-3 mt-3'>
+                {totalPages > 0 && (
+                    <div className='d-flex justify-content-end gap-3 mt-3'>
 
-                    <button
-                        className='btn btn-secondary'
-                        disabled={page === 0}
-                        onClick={() => setPage(page - 1)}
-                    >
-                        Previous
-                    </button>
+                        <button
+                            className='btn btn-secondary'
+                            disabled={page === 0}
+                            onClick={() => setPage(page - 1)}
+                        >
+                            Previous
+                        </button>
 
-                    <span className='mt-2'>
-                        Page {page + 1} of {totalPages}
-                    </span>
+                        <span className='mt-2'>
+                            Page {page + 1} of {totalPages}
+                        </span>
 
-                    <button
-                        className='btn btn-secondary'
-                        disabled={page >= totalPages - 1}
-                        onClick={() => setPage(page + 1)}
-                    >
-                        Next
-                    </button>
+                        <button
+                            className='btn btn-secondary'
+                            disabled={page >= totalPages - 1}
+                            onClick={() => setPage(page + 1)}
+                        >
+                            Next
+                        </button>
 
-                </div>
+                    </div>
+                )}
             </div>
         </>
     )
