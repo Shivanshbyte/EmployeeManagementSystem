@@ -5,8 +5,10 @@ import { useNavigate } from 'react-router-dom'
 
 function ListEmployeeComponent() {
     const navigate = useNavigate();
+    const role = localStorage.getItem("role");
 
     const [employee, setEmployee] = useState([])
+    const [loading, setLoading] = useState(true);
     const [searchKeyword, setSearchKeyword] = useState('')
     const [page,setPage] = useState(0);
     const [size] = useState(8);
@@ -36,46 +38,50 @@ console.log("totalPages:", totalPages);
 
     function getAllEmployee() {
 
-        if(searchKeyword.trim() !== ''){
+        setLoading(true);
+
+        if (searchKeyword.trim() !== '') {
 
             searchEmployees(
                 searchKeyword,
                 page,
                 size
             )
-            .then((response)=>{
+                .then((response) => {
 
-                setEmployee(
-                    response.data.content
-                )
+                    setEmployee(response.data.content);
 
-                setTotalPages(
-                    response.data.totalPages
-                )
+                    setTotalPages(
+                        response.data.totalPages
+                    );
 
-            })
-            .catch(error=>{
-                console.error(error)
-            })
+                })
+                .catch(error => {
+                    console.error(error);
+                })
+                .finally(() => {
+                    setLoading(false);
+                });
 
             return;
         }
 
-        listEmployees(page,size)
-            .then((response)=>{
+        listEmployees(page, size)
+            .then((response) => {
 
-                setEmployee(
-                    response.data.content
-                )
+                setEmployee(response.data.content);
 
                 setTotalPages(
                     response.data.totalPages
-                )
+                );
 
             })
-            .catch(error=>{
-                console.error(error)
+            .catch(error => {
+                console.error(error);
             })
+            .finally(() => {
+                setLoading(false);
+            });
     }
 
 
@@ -102,8 +108,22 @@ console.log("totalPages:", totalPages);
                <div className='d-flex justify-content-between mb-3'>
 
                    <button
-                       className='btn btn-danger'
-                       onClick={addNewEmployee}
+                       className="btn btn-danger"
+                       onClick={() => {
+                           if (role === "USER") return;
+                           addNewEmployee();
+                       }}
+                       title={
+                           role === "USER"
+                               ? "Admin access required"
+                               : ""
+                       }
+                       style={{
+                           opacity: role === "USER" ? 0.65 : 1,
+                           cursor: role === "USER"
+                               ? "not-allowed"
+                               : "pointer"
+                       }}
                    >
                        Add Employee
                    </button>
@@ -133,18 +153,111 @@ console.log("totalPages:", totalPages);
                     </thead>
                     <tbody>
 
-                        {
+                    {
+                        loading ? (
+
+                            [...Array(8)].map((_, index) => (
+                                <tr key={index}>
+
+                                    <td>
+                                        <div className="placeholder-glow">
+                                            <span className="placeholder col-12"></span>
+                                        </div>
+                                    </td>
+
+                                    <td>
+                                        <div className="placeholder-glow">
+                                            <span className="placeholder col-12"></span>
+                                        </div>
+                                    </td>
+
+                                    <td>
+                                        <div className="placeholder-glow">
+                                            <span className="placeholder col-12"></span>
+                                        </div>
+                                    </td>
+
+                                    <td>
+                                        <div className="placeholder-glow">
+                                            <span className="placeholder col-12"></span>
+                                        </div>
+                                    </td>
+
+                                    <td>
+                                        <div className="placeholder-glow">
+                                            <span className="placeholder col-12"></span>
+                                        </div>
+                                    </td>
+
+                                    <td>
+                                        <div className="placeholder-glow">
+                                            <span className="placeholder col-12"></span>
+                                        </div>
+                                    </td>
+
+                                </tr>
+                            ))
+
+                        ) : (
+
                             employee?.map(item =>
                                 <tr key={item.id} className='text-center'>
                                     <td>{item.id}</td>
                                     <td>{item.firstName}</td>
                                     <td>{item.lastName}</td>
                                     <td>{item.email}</td>
-                                    <td><button className='btn btn-success' onClick={() => updatehandler(item.id)}>Update</button></td>
-                                    <td><button className='btn btn-primary' onClick={() => deletehandler(item.id)}>Delete</button></td>
+
+                                    <td>
+                                        <button
+                                            className="btn btn-success"
+                                            onClick={() => {
+                                                if (role === "USER") return;
+                                                updatehandler(item.id);
+                                            }}
+                                            title={
+                                                role === "USER"
+                                                    ? "Admin access required"
+                                                    : ""
+                                            }
+                                            style={{
+                                                opacity: role === "USER" ? 0.65 : 1,
+                                                cursor: role === "USER"
+                                                    ? "not-allowed"
+                                                    : "pointer"
+                                            }}
+                                        >
+                                            Update
+                                        </button>
+                                    </td>
+
+                                    <td>
+                                        <button
+                                            className="btn btn-primary"
+                                            onClick={() => {
+                                                if (role === "USER") return;
+                                                deletehandler(item.id);
+                                            }}
+                                            title={
+                                                role === "USER"
+                                                    ? "Admin access required"
+                                                    : ""
+                                            }
+                                            style={{
+                                                opacity: role === "USER" ? 0.65 : 1,
+                                                cursor: role === "USER"
+                                                    ? "not-allowed"
+                                                    : "pointer"
+                                            }}
+                                        >
+                                            Delete
+                                        </button>
+                                    </td>
                                 </tr>
                             )
-                        }
+
+                        )
+                    }
+
                     </tbody>
                 </table>
                 {totalPages > 0 && (
