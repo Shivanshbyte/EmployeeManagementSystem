@@ -2,6 +2,7 @@ import { useState } from "react";
 import axios from "axios";
 import { useNavigate, Link } from "react-router-dom";
 
+
 function LoginComponent() {
 
     const [username,setUsername] = useState("");
@@ -16,7 +17,7 @@ function LoginComponent() {
         try{
 
             const response = await axios.post(
-                "http://localhost:8080/api/auth/login",
+                `${import.meta.env.VITE_API_URL}/api/auth/login`,
                 {
                     username,
                     password
