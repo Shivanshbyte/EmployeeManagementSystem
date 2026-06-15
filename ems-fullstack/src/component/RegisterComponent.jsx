@@ -1,6 +1,6 @@
 import { useState } from "react";
 import axios from "axios";
-import { useNavigate } from "react-router-dom";
+import { useNavigate ,Link} from "react-router-dom";
 
 function RegisterComponent() {
 
@@ -104,6 +104,20 @@ function RegisterComponent() {
                                 >
                                     Register
                                 </button>
+                                <div className="text-center mt-3">
+
+                                    <span>
+                                        Already have an account?
+                                    </span>
+
+                                    <Link
+                                        to="/login"
+                                        className="ms-2"
+                                    >
+                                        Login
+                                    </Link>
+
+                                </div>
 
                             </form>
 

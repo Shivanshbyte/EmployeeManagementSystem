@@ -1,6 +1,6 @@
 import { useState } from "react";
 import axios from "axios";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, Link } from "react-router-dom";
 
 function LoginComponent() {
 
@@ -101,12 +101,12 @@ function LoginComponent() {
                                         Don't have an account?
                                     </span>
 
-                                    <a
-                                        href="/register"
+                                    <Link
+                                        to="/register"
                                         className="ms-2"
                                     >
                                         Register
-                                    </a>
+                                    </Link>
                                 </div>
 
                             </form>
